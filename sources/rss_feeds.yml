@@ -1,0 +1,157 @@
+feeds:
+  - name: CBC Canada
+    url: https://www.cbc.ca/webfeed/rss/rss-canada
+    category: general_news
+    source_type: rss
+    enabled: true
+
+  - name: CBC Business
+    url: https://www.cbc.ca/webfeed/rss/rss-business
+    category: financial_news
+    source_type: rss
+    enabled: true
+
+  - name: CTV News Canada
+    url: https://www.ctvnews.ca/canada
+    category: general_news
+    source_type: source_url
+    enabled: false
+    notes: CTV does not currently publish a stable public RSS feed; monitor through search APIs.
+
+  - name: Global News Canada
+    url: https://globalnews.ca/canada/feed/
+    category: general_news
+    source_type: rss
+    enabled: true
+
+  - name: Global News Money
+    url: https://globalnews.ca/money/feed/
+    category: financial_news
+    source_type: rss
+    enabled: true
+
+  - name: Financial Post
+    url: https://financialpost.com/feed/
+    category: financial_news
+    source_type: rss
+    enabled: true
+
+  - name: The Globe and Mail Business
+    url: https://www.theglobeandmail.com/arc/outboundfeeds/rss/category/business/
+    category: financial_news
+    source_type: rss
+    enabled: true
+    notes: May be rate-limited or unavailable depending on publisher access.
+
+  - name: Yahoo Finance Canada
+    url: https://ca.finance.yahoo.com/
+    category: financial_news
+    source_type: source_url
+    enabled: false
+    notes: Monitor through search APIs because public RSS availability changes.
+
+  - name: Statistics Canada - The Daily All Subjects
+    url: https://www150.statcan.gc.ca/n1/rss/dai-quo/0-eng.atom
+    category: government_data
+    source_type: rss
+    enabled: true
+
+  - name: Statistics Canada - Income Spending Wealth
+    url: https://www150.statcan.gc.ca/n1/rss/dai-quo/11-eng.atom
+    category: government_data
+    source_type: rss
+    enabled: true
+
+  - name: Statistics Canada - Prices
+    url: https://www150.statcan.gc.ca/n1/rss/dai-quo/18-eng.atom
+    category: government_data
+    source_type: rss
+    enabled: true
+
+  - name: Bank of Canada Press Releases
+    url: https://www.bankofcanada.ca/content_type/press-releases/feed/
+    category: government_finance
+    source_type: rss
+    enabled: true
+
+  - name: Bank of Canada News
+    url: https://www.bankofcanada.ca/content_type/news/feed/
+    category: government_finance
+    source_type: rss
+    enabled: true
+
+  - name: Department of Finance Canada News Releases
+    url: https://api.io.canada.ca/io-server/gc/news/en/v2?dept=departmentoffinancecanada&sort=publishedDate&orderBy=desc&pick=50&format=atom
+    category: government_finance
+    source_type: rss
+    enabled: true
+
+  - name: CRA Charities and Giving
+    url: https://www.canada.ca/en/revenue-agency/services/e-services/feeds.html
+    category: charity_regulation
+    source_type: source_url
+    enabled: false
+    notes: CRA lists a Charities and giving feed; confirm exact feed URL before enabling direct fetch.
+
+  - name: CanadaHelps Blog
+    url: https://www.canadahelps.org/en/blog/feed/
+    category: philanthropy
+    source_type: rss
+    enabled: true
+
+  - name: Imagine Canada
+    url: https://imaginecanada.ca/en
+    category: charity_sector
+    source_type: source_url
+    enabled: false
+    notes: Monitor through search APIs if no stable RSS feed is available.
+
+  - name: CharityVillage
+    url: https://charityvillage.com/feed/
+    category: charity_sector
+    source_type: rss
+    enabled: true
+
+  - name: Future of Good
+    url: https://futureofgood.co/feed/
+    category: philanthropy
+    source_type: rss
+    enabled: true
+
+  - name: Carleton Charity Insights Canada Project
+    url: https://carleton.ca/cicp-pcpob/
+    category: charity_research
+    source_type: source_url
+    enabled: false
+    notes: Monitor through search APIs and enable RSS if a stable feed is confirmed.
+
+  - name: Wealth Professional Canada
+    url: https://www.wealthprofessional.ca/rss
+    category: advisor_media
+    source_type: rss
+    enabled: true
+
+  - name: Advisor.ca
+    url: https://www.advisor.ca/feed/
+    category: advisor_media
+    source_type: rss
+    enabled: true
+
+  - name: Investment Executive
+    url: https://www.investmentexecutive.com/feed/
+    category: advisor_media
+    source_type: rss
+    enabled: true
+
+  - name: Canadian Family Offices
+    url: https://canadianfamilyoffices.com/feed/
+    category: wealth_planning
+    source_type: rss
+    enabled: true
+
+  - name: Canadian Red Cross Disaster Updates
+    url: https://www.redcross.ca/about-us/media-news/news-releases
+    category: disaster_relief
+    source_type: source_url
+    enabled: false
+    notes: Monitor through search APIs if no stable RSS feed is available.

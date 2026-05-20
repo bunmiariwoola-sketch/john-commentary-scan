@@ -1,0 +1,72 @@
+queries:
+  - name: donor_advised_funds_canada
+    query: '"donor-advised fund" OR "donor advised fund" Canada'
+    category: donor_advised_funds
+    apis: [gdelt, newsapi]
+    max_results: 6
+
+  - name: charitable_giving_canada
+    query: '("charitable giving" OR philanthropy OR donations) Canada'
+    category: giving_trends
+    apis: [gdelt, newsapi]
+    max_results: 8
+
+  - name: affordability_generosity
+    query: '(affordability OR inflation OR "household finances") (donations OR generosity OR charity) Canada'
+    category: affordability
+    apis: [gdelt, newsapi]
+    max_results: 8
+
+  - name: tax_smart_giving
+    query: '("charitable tax credit" OR "capital gains" OR "securities donations" OR "year-end giving") Canada'
+    category: tax_smart_giving
+    apis: [gdelt, newsapi]
+    max_results: 8
+
+  - name: wealth_transfer_planning
+    query: '("wealth transfer" OR estate planning OR "financial planning") (charity OR philanthropy OR donation) Canada'
+    category: wealth_planning
+    apis: [gdelt, newsapi]
+    max_results: 6
+
+  - name: charity_sector_pressure
+    query: '(charities OR nonprofits OR "non-profits") ("rising demand" OR "fundraising shortfall" OR staffing OR "financial pressure") Canada'
+    category: charity_sector
+    apis: [gdelt, newsapi]
+    max_results: 8
+
+  - name: disaster_emergency_giving
+    query: '(wildfire OR flood OR disaster OR emergency) (donations OR relief OR charity) Canada'
+    category: disaster_relief
+    apis: [gdelt, newsapi]
+    max_results: 8
+
+  - name: community_led_giving
+    query: '("mutual aid" OR crowdfunding OR "community-led" OR "local generosity") Canada'
+    category: community_giving
+    apis: [gdelt, newsapi]
+    max_results: 6
+
+  - name: trust_accountability_charities
+    query: '(charity OR charities) (trust OR accountability OR transparency OR misinformation OR scam) Canada'
+    category: trust_accountability
+    apis: [gdelt, newsapi]
+    max_results: 8
+
+  - name: youth_family_financial_literacy
+    query: '("financial literacy" OR youth OR family) (giving OR generosity OR donation OR philanthropy) Canada'
+    category: family_youth_giving
+    apis: [gdelt, newsapi]
+    max_results: 6
+
+  - name: digital_giving_infrastructure
+    query: '("digital giving" OR "giving platform" OR "online donations" OR "donation platform") Canada'
+    category: digital_giving
+    apis: [gdelt, newsapi]
+    max_results: 8
+
+  - name: key_charity_sources
+    query: '("CanadaHelps" OR "Imagine Canada" OR "Future of Good" OR "Charity Insights Canada Project")'
+    category: charity_research
+    apis: [gdelt, newsapi]
+    max_results: 8

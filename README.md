@@ -2,7 +2,9 @@
 
 Automates a Canadian media and research scan for PR commentary opportunities for John Bromley, Founder and CEO of Charitable Impact.
 
-The scanner collects recent RSS and search API results, asks the OpenAI API to identify credible commentary opportunities, scores them from 1 to 5, writes a dated markdown brief, updates `latest_brief.md`, and can email the brief through SMTP.
+The scanner collects recent RSS and search API results, writes a dated markdown brief, updates `latest_brief.md`, and can email the brief through SMTP.
+
+By default, it runs in `source-only` mode, which does not call the OpenAI API and therefore does not use API credits. When API quota is available, use `ai` mode to identify commentary opportunities, score them from 1 to 5, and generate John angles, draft quotes, media targets, and recommended actions.
 
 ## What It Looks For
 
@@ -34,7 +36,7 @@ Edit `.env` with your local credentials. Do not commit `.env`.
 
 ## Environment Variables
 
-Required for full runs:
+Required only for AI analysis mode:
 
 - `OPENAI_API_KEY`
 
@@ -60,6 +62,7 @@ Optional email settings:
 Optional OpenAI setting:
 
 - `OPENAI_MODEL=gpt-4.1-mini`
+- `ANALYSIS_MODE=source-only`
 
 ## Local Usage
 
@@ -69,16 +72,22 @@ Run a no-network, no-API smoke test:
 python scripts/generate_brief.py --mode daily --dry-run
 ```
 
-Run the daily scan:
+Run the free source-only daily scan:
 
 ```bash
-python scripts/generate_brief.py --mode daily
+python scripts/generate_brief.py --mode daily --analysis-mode source-only
 ```
 
-Run the weekly scan and email it:
+Run the free source-only weekly scan and email it:
 
 ```bash
-python scripts/generate_brief.py --mode weekly --send-email
+python scripts/generate_brief.py --mode weekly --analysis-mode source-only --send-email
+```
+
+Run the full AI-generated brief when OpenAI API quota is available:
+
+```bash
+python scripts/generate_brief.py --mode daily --analysis-mode ai
 ```
 
 Collect sources only:
@@ -106,6 +115,8 @@ Add:
 
 The workflows pass these values as environment variables at runtime.
 
+`OPENAI_API_KEY` is not needed for the default `source-only` workflow mode. It is only needed when running with `analysis_mode: ai`.
+
 ## Scheduling
 
 GitHub Actions schedules use UTC. The included schedules approximate America/Toronto:
@@ -115,7 +126,12 @@ GitHub Actions schedules use UTC. The included schedules approximate America/Tor
 
 Toronto switches between UTC-4 and UTC-5. If exact winter timing matters, update the workflow cron schedules seasonally.
 
-Both workflows also support manual dispatch with a `mode` input of `daily` or `weekly`.
+Both workflows also support manual dispatch with:
+
+- `mode`: `daily` or `weekly`
+- `analysis_mode`: `source-only` or `ai`
+
+Scheduled runs default to `source-only` so they do not spend OpenAI API credits.
 
 ## Customizing Sources
 
@@ -140,12 +156,14 @@ Edit:
 
 The model is instructed to be selective, strategic, credible, and concise. Weak ties to Charitable Impact, donor-advised funds, donors, charities, or giving infrastructure should receive low scores.
 
+These prompt files are used only in `ai` mode. `source-only` mode creates a basic source digest without AI scoring, John angles, draft quotes, media targets, or recommended actions.
+
 ## Verification
 
 ```bash
 python -m compileall scripts
 pytest
-python scripts/generate_brief.py --mode daily --dry-run
+python scripts/generate_brief.py --mode daily --analysis-mode source-only --dry-run
 ```
 
 ## Limitations
@@ -154,3 +172,4 @@ python scripts/generate_brief.py --mode daily --dry-run
 - NewsAPI is optional, but using it improves coverage for outlets without RSS.
 - GitHub Actions cron schedules are UTC and only approximate America/Toronto across daylight saving changes.
 - The OpenAI brief quality depends on source freshness, source metadata, and prompt tuning.
+- `source-only` mode is intentionally simpler than the full AI brief. It is useful for monitoring links while avoiding API costs.

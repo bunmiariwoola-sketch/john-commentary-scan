@@ -1,45 +1,29 @@
-# Daily PR Commentary Scan - 2026-05-20
+# Daily PR Commentary Scan - 2026-05-21 (Source-Only)
 
 ## Executive Summary
 
-Dry run completed successfully. This sample shows the expected markdown structure without calling live feeds, search APIs, OpenAI, or SMTP.
+Collected 2 recent source items. AI scoring, John angles, draft quotes, and media recommendations are disabled for this no-cost mode.
 
-## Opportunity 1: Household Affordability And Generosity
+Categories seen: Affordability, Charity Sector.
 
-**What happened:** Canadian households report tighter budgets as giving season approaches.
+## Source Digest
 
-**Why it matters now:** Affordability pressure can change how Canadians think about generosity, timing, and tax-smart giving.
+### 1. Canadian households report tighter budgets as giving season approaches
 
-**Connection:** Charitable Impact can help donors plan thoughtful giving even when household finances feel tighter.
+- Source: Dry Run News
+- Category: Affordability
+- Published: 2026-05-21T14:46:59.067339-04:00
+- Summary: A placeholder item used to verify formatting without live APIs.
+- Link: https://example.com/household-budgets-giving
 
-**Score: 4 - Prepare commentary**
+### 2. Charities see rising demand and more complicated donor decisions
 
-**Suggested John angle:** Generosity is strongest when giving tools help people act intentionally, not reactively.
+- Source: Dry Run Research
+- Category: Charity Sector
+- Published: 2026-05-21T14:46:59.067437-04:00
+- Summary: A placeholder item used to exercise the opportunity brief structure.
+- Link: https://example.com/charity-demand
 
-**Draft quote:** "Canadians are still generous, but many are being more deliberate. The opportunity is to make giving easier to plan, easier to understand, and easier to sustain."
+## Next Step
 
-**Suggested media targets:** Canadian personal finance reporters, business desks, charity-sector newsletters.
-
-**Recommended action:** Prepare a short comment linking affordability, donor behaviour, and planned giving.
-
-**Source links:** [Dry Run News](https://example.com/household-budgets-giving)
-
-## Opportunity 2: Charity Sector Pressure
-
-**What happened:** Charities see rising demand and more complicated donor decisions.
-
-**Why it matters now:** Rising demand and uneven giving can put pressure on charities just as community needs increase.
-
-**Connection:** Giving infrastructure can help move resources to charities more efficiently and keep donors engaged.
-
-**Score: 3 - Monitor**
-
-**Suggested John angle:** The sector needs both trust and better tools for sustained donor participation.
-
-**Draft quote:** "When charities face more demand, the answer is not only more generosity. It is better-connected generosity that helps donors follow through."
-
-**Suggested media targets:** Future of Good, charity-sector trade media, local CBC business/community programs.
-
-**Recommended action:** Monitor for a stronger data point or government release before pitching broadly.
-
-**Source links:** [Dry Run Research](https://example.com/charity-demand)
+When OpenAI API quota is available, run the same scan with `--analysis-mode ai` to generate opportunity scores, John angles, draft quotes, media targets, and recommended actions.

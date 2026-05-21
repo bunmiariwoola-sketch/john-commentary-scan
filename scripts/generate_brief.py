@@ -29,6 +29,7 @@ SCORE_LABELS = {
     2: "Keep for content",
     1: "Ignore",
 }
+ANALYSIS_MODES = ("source-only", "ai")
 
 TORONTO = ZoneInfo("America/Toronto")
 
@@ -55,6 +56,13 @@ def brief_title(mode: str, now: datetime | None = None) -> str:
     current = now or datetime.now(TORONTO)
     label = "Daily" if mode == "daily" else "Weekly"
     return f"{label} PR Commentary Scan - {current:%Y-%m-%d}"
+
+
+def normalize_analysis_mode(value: str | None) -> str:
+    mode = (value or "source-only").strip().lower()
+    if mode not in ANALYSIS_MODES:
+        raise ValueError(f"Unsupported analysis mode: {mode}")
+    return mode
 
 
 def sample_items() -> list[dict[str, Any]]:
@@ -87,6 +95,73 @@ def sample_items() -> list[dict[str, Any]]:
 def item_context(items: list[dict[str, Any]], max_items: int) -> str:
     selected = items[:max_items]
     return json.dumps(selected, indent=2, ensure_ascii=False)
+
+
+def category_label(value: Any) -> str:
+    return str(value or "general").replace("_", " ").title()
+
+
+def source_only_brief(mode: str, items: list[dict[str, Any]], max_items: int) -> str:
+    """Build a no-cost digest that does not call OpenAI."""
+
+    title = brief_title(mode)
+    selected = items[:max_items]
+
+    if not selected:
+        return f"""# {title} (Source-Only)
+
+## Executive Summary
+
+No recent source items were collected. Check RSS availability, search API credentials, and workflow network access.
+
+AI analysis is currently disabled, so this run did not call the OpenAI API.
+"""
+
+    categories = sorted({category_label(item.get("category")) for item in selected})
+    lines = [
+        f"# {title} (Source-Only)",
+        "",
+        "## Executive Summary",
+        "",
+        f"Collected {len(selected)} recent source items. AI scoring, John angles, draft quotes, and media recommendations are disabled for this no-cost mode.",
+        "",
+        f"Categories seen: {', '.join(categories)}.",
+        "",
+        "## Source Digest",
+        "",
+    ]
+
+    for index, item in enumerate(selected, start=1):
+        title_text = str(item.get("title") or "Untitled item").strip()
+        source = str(item.get("source") or "Unknown source").strip()
+        url = str(item.get("url") or "").strip()
+        published_at = item.get("published_at") or "Date unavailable"
+        category = category_label(item.get("category"))
+        summary = str(item.get("summary") or "").strip()
+
+        lines.extend(
+            [
+                f"### {index}. {title_text}",
+                "",
+                f"- Source: {source}",
+                f"- Category: {category}",
+                f"- Published: {published_at}",
+            ]
+        )
+        if summary:
+            lines.append(f"- Summary: {summary}")
+        if url:
+            lines.append(f"- Link: {url}")
+        lines.append("")
+
+    lines.extend(
+        [
+            "## Next Step",
+            "",
+            "When OpenAI API quota is available, run the same scan with `--analysis-mode ai` to generate opportunity scores, John angles, draft quotes, media targets, and recommended actions.",
+        ]
+    )
+    return "\n".join(lines).strip() + "\n"
 
 
 def build_user_prompt(
@@ -230,6 +305,12 @@ def write_brief(markdown: str, mode: str, now: datetime | None = None) -> tuple[
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate a PR commentary brief.")
     parser.add_argument("--mode", choices=("daily", "weekly"), default="daily")
+    parser.add_argument(
+        "--analysis-mode",
+        choices=ANALYSIS_MODES,
+        default=None,
+        help="Use source-only for a no-cost digest, or ai for the full OpenAI-generated PR brief.",
+    )
     parser.add_argument("--max-items", type=int, default=80)
     parser.add_argument("--dry-run", action="store_true", help="Use sample items and skip external services.")
     parser.add_argument("--send-email", action="store_true", help="Email the generated brief using SMTP env vars.")
@@ -239,10 +320,11 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     load_dotenv()
+    analysis_mode = normalize_analysis_mode(args.analysis_mode or os.getenv("ANALYSIS_MODE"))
 
     if args.dry_run:
         items = sample_items()
-        markdown = dry_run_brief(args.mode, items)
+        markdown = source_only_brief(args.mode, items, args.max_items) if analysis_mode == "source-only" else dry_run_brief(args.mode, items)
     else:
         try:
             from scripts.collect_sources import collect_sources
@@ -250,13 +332,10 @@ def main() -> int:
             from collect_sources import collect_sources  # type: ignore
 
         items = collect_sources(mode=args.mode, max_items=args.max_items)
-        if not items:
-            markdown = f"""# {brief_title(args.mode)}
-
-## Executive Summary
-
-No recent source items were collected. Check RSS availability, search API credentials, and workflow network access.
-"""
+        if analysis_mode == "source-only":
+            markdown = source_only_brief(args.mode, items, args.max_items)
+        elif not items:
+            markdown = source_only_brief(args.mode, items, args.max_items)
         else:
             system_prompt = load_prompt("system_prompt.md")
             scoring_criteria = load_prompt("scoring_criteria.md")

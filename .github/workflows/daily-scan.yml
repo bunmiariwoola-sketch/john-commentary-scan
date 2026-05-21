@@ -14,12 +14,21 @@ on:
         options:
           - daily
           - weekly
+      analysis_mode:
+        description: Analysis mode
+        type: choice
+        required: true
+        default: source-only
+        options:
+          - source-only
+          - ai
 
 jobs:
   scan:
     runs-on: ubuntu-latest
     env:
       MODE: ${{ github.event.inputs.mode || 'daily' }}
+      ANALYSIS_MODE: ${{ github.event.inputs.analysis_mode || 'source-only' }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4.1-mini' }}
       NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
@@ -41,12 +50,13 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run scan
-        run: python scripts/generate_brief.py --mode "$MODE" --send-email
+        run: python scripts/generate_brief.py --mode "$MODE" --analysis-mode "$ANALYSIS_MODE" --send-email
 
       - name: Upload brief artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: commentary-brief-${{ env.MODE }}
+          name: commentary-brief-${{ env.MODE }}-${{ env.ANALYSIS_MODE }}
           path: |
             latest_brief.md
             outputs/*.md
